@@ -10,12 +10,12 @@ On Ubuntu/Debian etc. install
 
 Tools needed to install the tools:
 
+- make
 - git
-- npm
 - vala (should get rid of it)
 - gcc
-- make
-- brew (OSX)
+- npm
+- homebrew (OSX)
 
 
 ## Make
@@ -27,7 +27,7 @@ Obvios ;-)
 
 gsassc: A very fast C implementation of libsass:
 
-(gsassc)[https://github.com/hannenz/gsassc]
+[gsassc](https://github.com/hannenz/gsassc)
 
 Needs: `libsass`, `glib`, build tools
 
@@ -59,7 +59,7 @@ cp svgmerge ~/.local/bin
 
 ## SVG Merger
 
-- (svgmerge)[https://github.com/hannenz/svgmerge]
+- [svgmerge](https://github.com/hannenz/svgmerge)
 
 Needs: Vala, glib
 
