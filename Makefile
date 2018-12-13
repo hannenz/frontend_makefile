@@ -20,7 +20,7 @@ SASS_COMPILER_OPTIONS:=-t compressed -g
 
 
 JS_COMPRESSOR:=uglifyjs
-JS_COMPRESSOR_OPTIONS:=--compress
+JS_COMPRESSOR_OPTIONS:=--compress --
 
 SVG_OPTIMIZER:=svgo
 SVGO_OPTIONS:=--quiet --enable=removeStyleElement --disable=cleanupIDs
@@ -139,10 +139,7 @@ css: $(CSS_DEST_DIR)/main.css
 $(CSS_DEST_DIR)/main.css: $(CSS_SRC_DIR)/main.scss $(CSS_SRC_FILES)
 	@mkdir -p $(CSS_DEST_DIR)
 	$(call colorecho, 3, "Compiling $@");
-	$(eval TMPFILE := $(shell mktemp))
-	@-$(SASS_COMPILER) $(SASS_COMPILER_OPTIONS) -o $(TMPFILE) $<
-	@echo $(BANNER) | cat - $(TMPFILE) > $@
-
+	(printf "%b" $(BANNER) ; $(SASS_COMPILER) $(SASS_COMPILER_OPTIONS) $<) > $@
 
 
 # -----------------------
@@ -155,9 +152,7 @@ js: $(JS_DEST_DIR)/main.min.js
 $(JS_DEST_DIR)/main.min.js: $(JS_SRC_FILES)
 	$(call colorecho, 3, "Compressing $@")
 	@mkdir -p $(JS_DEST_DIR)
-	@-$(JS_COMPRESSOR) $(JS_COMPRESSOR_OPTIONS) -o $@ $^ \
-			&& ([ $$? -eq 0 ] && (tput setaf 2; echo ✔ Compilation succeeded; tput sgr0))\
-			|| (tput setaf 1; tput bold; echo ✖ Compilation failed; tput  sgr0)
+	(printf "%b" $(BANNER); $(JS_COMPRESSOR) $(JS_COMPRESSOR_OPTIONS) $^) > $@ 
 
 
 
