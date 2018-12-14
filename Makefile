@@ -16,7 +16,7 @@ PROJECT_DIR:=$(CURDIR)
 
 SASS_COMPILER:=gsassc
 # You might want to add include paths like e.g. `-I node_modules/foundation/scss:another/path`
-SASS_COMPILER_OPTIONS:=-t compressed -g
+SASS_COMPILER_OPTIONS:=--style compressed --source-map
 
 
 JS_COMPRESSOR:=uglifyjs
@@ -76,6 +76,8 @@ CSS_VENDOR_DEST = $(DIST)/css/vendor
 # Environment
 DATE:=$(shell date +%F-%H%M)
 HOSTNAME:=$(shell hostname)
+GIT_COMMIT:=$(shell git rev-parse --short HEAD)
+GIT_BRANCH:=$(shell git rev-parse --abbrev-ref HEAD)
 
 
 
@@ -118,7 +120,7 @@ BANNER:=\
 	" * @project       $(PROJECT_NAME)\n"\
 	" * @author        Johannes Braun <j.braun@agentur-halma.de>\n"\
 	" * @build         $(DATE)\n"\
-	" * @release       gitRevSync.long() + gitRevSync.branch()\n"\
+	" * @release       $(GIT_COMMIT) [$(GIT_BRANCH)]\n"\
 	" * @copyright     Copyright (c) " $(shell date +%Y) ", <HALMA GmbH & Co. KG>\n"\
 	" */\n"\
 	"\n"
@@ -139,7 +141,8 @@ css: $(CSS_DEST_DIR)/main.css
 $(CSS_DEST_DIR)/main.css: $(CSS_SRC_DIR)/main.scss $(CSS_SRC_FILES)
 	@mkdir -p $(CSS_DEST_DIR)
 	$(call colorecho, 3, "Compiling $@");
-	(printf "%b" $(BANNER) ; $(SASS_COMPILER) $(SASS_COMPILER_OPTIONS) $<) > $@
+	@-(printf "%b" $(BANNER) ; $(SASS_COMPILER) $(SASS_COMPILER_OPTIONS) $<) > $@
+
 
 
 # -----------------------
